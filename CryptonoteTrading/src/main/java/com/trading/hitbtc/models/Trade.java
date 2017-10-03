@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
-@Table(name = "Trade_HITBTC")
+@Table(name = "Trade_HITBTC", indexes={@Index(name="tid_index",columnList="tid")})
 public class Trade implements Serializable {
 
 	/**

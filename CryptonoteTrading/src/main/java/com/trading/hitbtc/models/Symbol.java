@@ -6,10 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Symbol_HITBTC")
+@Table(name="Symbol_HITBTC", indexes= {@Index(name="symbol_index", columnList="symbol")})
 public class Symbol implements Serializable {
 
 	/**
