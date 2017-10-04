@@ -19,9 +19,9 @@ public class JsonBalance implements Serializable {
 	@JsonProperty("currency_code")
 	private String currencyCode;
 	@JsonProperty("cash")
-	private double cash;
+	private String cash;
 	@JsonProperty("reserved")
-	private double reserved;
+	private String reserved;
 	@JsonIgnore
 	@Valid
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -40,7 +40,7 @@ public class JsonBalance implements Serializable {
 	 * @param cash
 	 * @param reserved
 	 */
-	public JsonBalance(String currencyCode, double cash, double reserved) {
+	public JsonBalance(String currencyCode, String cash, String reserved) {
 		super();
 		this.currencyCode = currencyCode;
 		this.cash = cash;
@@ -63,31 +63,31 @@ public class JsonBalance implements Serializable {
 	}
 
 	@JsonProperty("cash")
-	public double getCash() {
+	public String getCash() {
 		return cash;
 	}
 
 	@JsonProperty("cash")
-	public void setCash(double cash) {
+	public void setCash(String cash) {
 		this.cash = cash;
 	}
 
-	public JsonBalance withCash(double cash) {
+	public JsonBalance withCash(String cash) {
 		this.cash = cash;
 		return this;
 	}
 
 	@JsonProperty("reserved")
-	public double getReserved() {
+	public String getReserved() {
 		return reserved;
 	}
 
 	@JsonProperty("reserved")
-	public void setReserved(double reserved) {
+	public void setReserved(String reserved) {
 		this.reserved = reserved;
 	}
 
-	public JsonBalance withReserved(double reserved) {
+	public JsonBalance withReserved(String reserved) {
 		this.reserved = reserved;
 		return this;
 	}
