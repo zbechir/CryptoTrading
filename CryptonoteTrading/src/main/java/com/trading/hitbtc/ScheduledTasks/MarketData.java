@@ -113,7 +113,6 @@ public class MarketData {
 		}
 	}
 
-	@Async
 	@Scheduled(fixedDelay = 60000)
 	public void getAllTrades() {
 		String url = "";

@@ -38,7 +38,7 @@ public class TickerControl {
 	@GetMapping("/ticker")
 	public List<Ticker> getTickers() {
 		log.info("Getting all Tickers");
-		return tickerRepo.findAll(new Sort(Sort.Direction.ASC, "timestamp"));
+		return tickerRepo.findAll(new Sort(Sort.Direction.DESC, "timestamp"));
 	}
 	
 	@GetMapping("/ticker/populate")
