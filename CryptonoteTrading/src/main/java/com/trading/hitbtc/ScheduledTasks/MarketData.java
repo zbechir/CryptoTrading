@@ -1,5 +1,7 @@
 package com.trading.hitbtc.ScheduledTasks;
 
+import static org.assertj.core.api.Assertions.entry;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -49,28 +51,33 @@ public class MarketData {
 		JsonTickers jsonTickers = restTemplate.getForObject("https://api.hitbtc.com/api/1/public/ticker",
 				JsonTickers.class);
 		Map<String, JsonTicker> allTickers = jsonTickers.getTickers();
-		for (Map.Entry<String, JsonTicker> entry : allTickers.entrySet()) {
-			String symbolName = entry.getKey();
-			Symbol symbol = symbolRepo.findBySymbolEquals(symbolName);
-			if (symbol == null) {
-				log.error("Symbol : " + symbolName + " Introuvalble");
-			} else {
-				Ticker ticker = new Ticker();
-				ticker.setAsk(Double.valueOf(entry.getValue().getAsk()));
-				ticker.setBid(Double.valueOf(entry.getValue().getBid()));
-				ticker.setHigh(Double.valueOf(entry.getValue().getHigh()));
-				ticker.setLast(Double.valueOf(entry.getValue().getLast()));
-				ticker.setLow(Double.valueOf(entry.getValue().getLow()));
-				ticker.setOpen(Double.valueOf(entry.getValue().getOpen()));
-				ticker.setVolume(Double.valueOf(entry.getValue().getVolume()));
-				ticker.setVolumeQuote(Double.valueOf(entry.getValue().getVolumeQuote()));
-				ticker.setSymbol(symbol);
-				ticker.setTimestamp(new Date(entry.getValue().getTimestamp()));
-				Tickers.add(ticker);
-				log.info("Ticker : " + ticker + " Added successfully...");
-			}
 
+		for (Map.Entry<String, JsonTicker> entry : allTickers.entrySet()) {
+			try {
+				String symbolName = entry.getKey();
+				Symbol symbol = symbolRepo.findBySymbolEquals(symbolName);
+				if (symbol == null) {
+					log.error("Symbol : " + symbolName + " Introuvalble");
+				} else {
+					Ticker ticker = new Ticker();
+					ticker.setAsk(Double.valueOf(entry.getValue().getAsk()));
+					ticker.setBid(Double.valueOf(entry.getValue().getBid()));
+					ticker.setHigh(Double.valueOf(entry.getValue().getHigh()));
+					ticker.setLast(Double.valueOf(entry.getValue().getLast()));
+					ticker.setLow(Double.valueOf(entry.getValue().getLow()));
+					ticker.setOpen(Double.valueOf(entry.getValue().getOpen()));
+					ticker.setVolume(Double.valueOf(entry.getValue().getVolume()));
+					ticker.setVolumeQuote(Double.valueOf(entry.getValue().getVolumeQuote()));
+					ticker.setSymbol(symbol);
+					ticker.setTimestamp(new Date(entry.getValue().getTimestamp()));
+					Tickers.add(ticker);
+					log.info("Ticker : " + ticker + " Added successfully...");
+				}
+			} catch (java.lang.NullPointerException e) {
+				log.error("Error on conversion for Ticker :" + entry.getValue()+" For Symbol : "+entry.getKey()+" ==> Error is : "+e.getMessage());
+			}
 		}
+
 		tickerRepo.save(Tickers);
 		log.info("Tickers saved succefully...");
 	}
@@ -116,10 +123,10 @@ public class MarketData {
 	@Scheduled(fixedDelay = 60000)
 	public void getAllTrades() {
 		String url = "";
-
+		List<Trade> Trades = new ArrayList<Trade>();
 		List<Symbol> symbols = symbolRepo.findAll();
 		for (Iterator<Symbol> it = symbols.iterator(); it.hasNext();) {
-			List<Trade> Trades = new ArrayList<Trade>();
+			
 			Symbol symbol = it.next();
 			Trade lastTrade = tradeRepo.findFirstBySymbolOrderByTidDesc(symbol);
 			if (lastTrade == null) {
@@ -149,11 +156,13 @@ public class MarketData {
 				Trades.add(trade);
 
 			}
-			log.info("Saving " + Trades.size() + " Trades...");
-			tradeRepo.save(Trades);
+			//log.info("Saving " + Trades.size() + " Trades...");
+			//tradeRepo.save(Trades);
 
 		}
+		log.info("Saving " + Trades.size() + " Trades...");
+		tradeRepo.save(Trades);
+		
 	}
-	
 
 }

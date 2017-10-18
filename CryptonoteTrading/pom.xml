@@ -6,7 +6,6 @@
 	<groupId>com.trading.cryptoNote</groupId>
 	<artifactId>CryptonoteTrading</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 
 	<name>CryptonoteTrading</name>
 	<description>CryptoNotes (Monero, Bytecoins, etc...) Trading projet</description>
