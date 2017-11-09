@@ -1,208 +1,260 @@
 package com.trading.hitbtc.json;
 
 import java.io.Serializable;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
+import java.util.HashMap;
+import java.util.Map;
+import javax.validation.Valid;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "ask", "bid", "last", "low", "high", "open", "volume", "volume_quote", "timestamp" })
-public class JsonTicker implements Serializable {
+@JsonPropertyOrder({
+"ask",
+"bid",
+"last",
+"open",
+"low",
+"high",
+"volume",
+"volumeQuote",
+"timestamp",
+"symbol"
+})
+public class JsonTicker implements Serializable
+{
 
-	@JsonProperty("ask")
-	private String ask;
-	@JsonProperty("bid")
-	private String bid;
-	@JsonProperty("last")
-	private String last;
-	@JsonProperty("low")
-	private String low;
-	@JsonProperty("high")
-	private String high;
-	@JsonProperty("open")
-	private String open;
-	@JsonProperty("volume")
-	private String volume;
-	@JsonProperty("volume_quote")
-	private String volumeQuote;
-	@JsonProperty("timestamp")
-	private long timestamp;
+@JsonProperty("ask")
+private String ask;
+@JsonProperty("bid")
+private String bid;
+@JsonProperty("last")
+private String last;
+@JsonProperty("open")
+private String open;
+@JsonProperty("low")
+private String low;
+@JsonProperty("high")
+private String high;
+@JsonProperty("volume")
+private String volume;
+@JsonProperty("volumeQuote")
+private String volumeQuote;
+@JsonProperty("timestamp")
+private String timestamp;
+@JsonProperty("symbol")
+private String symbol;
+@JsonIgnore
+@Valid
+private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+private final static long serialVersionUID = -2845920199842658616L;
 
-	private final static long serialVersionUID = -4676209090253083407L;
+/**
+* No args constructor for use in serialization
+* 
+*/
+public JsonTicker() {
+}
 
-	/**
-	 * No args constructor for use in serialization
-	 * 
-	 */
-	public JsonTicker() {
-	}
+/**
+* 
+* @param timestamp
+* @param open
+* @param symbol
+* @param last
+* @param volume
+* @param high
+* @param low
+* @param ask
+* @param bid
+* @param volumeQuote
+*/
+public JsonTicker(String ask, String bid, String last, String open, String low, String high, String volume, String volumeQuote, String timestamp, String symbol) {
+super();
+this.ask = ask;
+this.bid = bid;
+this.last = last;
+this.open = open;
+this.low = low;
+this.high = high;
+this.volume = volume;
+this.volumeQuote = volumeQuote;
+this.timestamp = timestamp;
+this.symbol = symbol;
+}
 
-	/**
-	 * 
-	 * @param timestamp
-	 * @param open
-	 * @param last
-	 * @param volume
-	 * @param high
-	 * @param low
-	 * @param ask
-	 * @param bid
-	 * @param volumeQuote
-	 */
-	public JsonTicker(String ask, String bid, String last, String low, String high, String open, String volume,
-			String volumeQuote, long timestamp) {
-		super();
-		this.ask = ask;
-		this.bid = bid;
-		this.last = last;
-		this.low = low;
-		this.high = high;
-		this.open = open;
-		this.volume = volume;
-		this.volumeQuote = volumeQuote;
-		this.timestamp = timestamp;
+@JsonProperty("ask")
+public String getAsk() {
+return ask;
+}
 
-	}
+@JsonProperty("ask")
+public void setAsk(String ask) {
+this.ask = ask;
+}
 
-	@JsonProperty("ask")
-	public String getAsk() {
-		return ask;
-	}
+public JsonTicker withAsk(String ask) {
+this.ask = ask;
+return this;
+}
 
-	@JsonProperty("ask")
-	public void setAsk(String ask) {
-		this.ask = ask;
-	}
+@JsonProperty("bid")
+public String getBid() {
+return bid;
+}
 
-	public JsonTicker withAsk(String ask) {
-		this.ask = ask;
-		return this;
-	}
+@JsonProperty("bid")
+public void setBid(String bid) {
+this.bid = bid;
+}
 
-	@JsonProperty("bid")
-	public String getBid() {
-		return bid;
-	}
+public JsonTicker withBid(String bid) {
+this.bid = bid;
+return this;
+}
 
-	@JsonProperty("bid")
-	public void setBid(String bid) {
-		this.bid = bid;
-	}
+@JsonProperty("last")
+public String getLast() {
+return last;
+}
 
-	public JsonTicker withBid(String bid) {
-		this.bid = bid;
-		return this;
-	}
+@JsonProperty("last")
+public void setLast(String last) {
+this.last = last;
+}
 
-	@JsonProperty("last")
-	public String getLast() {
-		return last;
-	}
+public JsonTicker withLast(String last) {
+this.last = last;
+return this;
+}
 
-	@JsonProperty("last")
-	public void setLast(String last) {
-		this.last = last;
-	}
+@JsonProperty("open")
+public String getOpen() {
+return open;
+}
 
-	public JsonTicker withLast(String last) {
-		this.last = last;
-		return this;
-	}
+@JsonProperty("open")
+public void setOpen(String open) {
+this.open = open;
+}
 
-	@JsonProperty("low")
-	public String getLow() {
-		return low;
-	}
+public JsonTicker withOpen(String open) {
+this.open = open;
+return this;
+}
 
-	@JsonProperty("low")
-	public void setLow(String low) {
-		this.low = low;
-	}
+@JsonProperty("low")
+public String getLow() {
+return low;
+}
 
-	public JsonTicker withLow(String low) {
-		this.low = low;
-		return this;
-	}
+@JsonProperty("low")
+public void setLow(String low) {
+this.low = low;
+}
 
-	@JsonProperty("high")
-	public String getHigh() {
-		return high;
-	}
+public JsonTicker withLow(String low) {
+this.low = low;
+return this;
+}
 
-	@JsonProperty("high")
-	public void setHigh(String high) {
-		this.high = high;
-	}
+@JsonProperty("high")
+public String getHigh() {
+return high;
+}
 
-	public JsonTicker withHigh(String high) {
-		this.high = high;
-		return this;
-	}
+@JsonProperty("high")
+public void setHigh(String high) {
+this.high = high;
+}
 
-	@JsonProperty("open")
-	public String getOpen() {
-		return open;
-	}
+public JsonTicker withHigh(String high) {
+this.high = high;
+return this;
+}
 
-	@JsonProperty("open")
-	public void setOpen(String open) {
-		this.open = open;
-	}
+@JsonProperty("volume")
+public String getVolume() {
+return volume;
+}
 
-	public JsonTicker withOpen(String open) {
-		this.open = open;
-		return this;
-	}
+@JsonProperty("volume")
+public void setVolume(String volume) {
+this.volume = volume;
+}
 
-	@JsonProperty("volume")
-	public String getVolume() {
-		return volume;
-	}
+public JsonTicker withVolume(String volume) {
+this.volume = volume;
+return this;
+}
 
-	@JsonProperty("volume")
-	public void setVolume(String volume) {
-		this.volume = volume;
-	}
+@JsonProperty("volumeQuote")
+public String getVolumeQuote() {
+return volumeQuote;
+}
 
-	public JsonTicker withVolume(String volume) {
-		this.volume = volume;
-		return this;
-	}
+@JsonProperty("volumeQuote")
+public void setVolumeQuote(String volumeQuote) {
+this.volumeQuote = volumeQuote;
+}
 
-	@JsonProperty("volume_quote")
-	public String getVolumeQuote() {
-		return volumeQuote;
-	}
+public JsonTicker withVolumeQuote(String volumeQuote) {
+this.volumeQuote = volumeQuote;
+return this;
+}
 
-	@JsonProperty("volume_quote")
-	public void setVolumeQuote(String volumeQuote) {
-		this.volumeQuote = volumeQuote;
-	}
+@JsonProperty("timestamp")
+public String getTimestamp() {
+return timestamp;
+}
 
-	public JsonTicker withVolumeQuote(String volumeQuote) {
-		this.volumeQuote = volumeQuote;
-		return this;
-	}
+@JsonProperty("timestamp")
+public void setTimestamp(String timestamp) {
+this.timestamp = timestamp;
+}
 
-	@JsonProperty("timestamp")
-	public long getTimestamp() {
-		return timestamp;
-	}
+public JsonTicker withTimestamp(String timestamp) {
+this.timestamp = timestamp;
+return this;
+}
 
-	@JsonProperty("timestamp")
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	}
+@JsonProperty("symbol")
+public String getSymbol() {
+return symbol;
+}
 
-	public JsonTicker withTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-		return this;
-	}
+@JsonProperty("symbol")
+public void setSymbol(String symbol) {
+this.symbol = symbol;
+}
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+public JsonTicker withSymbol(String symbol) {
+this.symbol = symbol;
+return this;
+}
+
+@JsonAnyGetter
+public Map<String, Object> getAdditionalProperties() {
+return this.additionalProperties;
+}
+
+@JsonAnySetter
+public void setAdditionalProperty(String name, Object value) {
+this.additionalProperties.put(name, value);
+}
+
+public JsonTicker withAdditionalProperty(String name, Object value) {
+this.additionalProperties.put(name, value);
+return this;
+}
+
+@Override
+public String toString() {
+return new ToStringBuilder(this).append("ask", ask).append("bid", bid).append("last", last).append("open", open).append("low", low).append("high", high).append("volume", volume).append("volumeQuote", volumeQuote).append("timestamp", timestamp).append("symbol", symbol).append("additionalProperties", additionalProperties).toString();
+}
+
 }
