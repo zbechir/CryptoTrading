@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
-@Table(name = "Trade_HITBTC", indexes={@Index(name="tid_index",columnList="tid")})
+@Table(name = "Trade_HITBTC", indexes = { @Index(name = "id_index", columnList = "id") })
 public class Trade implements Serializable {
 
 	/**
@@ -26,11 +26,11 @@ public class Trade implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	private Date date;
-	private double price;
-	private double amount;
-	private long tid;
+	private Long TradeId;
+	private Date timestamp;
+	private Double price;
+	private Double quantity;
+	private Long id;
 	private String side;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "symbol_id")
@@ -41,55 +41,55 @@ public class Trade implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Trade(long id, Date date, double price, double amount, long tid, String side, Symbol symbol) {
+	public Trade(Long tradeId, Date timestamp, Double price, Double quantity, Long id, String side, Symbol symbol) {
 		super();
-		this.id = id;
-		this.date = date;
+		TradeId = tradeId;
+		this.timestamp = timestamp;
 		this.price = price;
-		this.amount = amount;
-		this.tid = tid;
+		this.quantity = quantity;
+		this.id = id;
 		this.side = side;
 		this.symbol = symbol;
 	}
 
-	public long getId() {
-		return id;
+	public Long getTradeId() {
+		return TradeId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setTradeId(Long tradeId) {
+		TradeId = tradeId;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getTimestamp() {
+		return timestamp;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
-	public double getAmount() {
-		return amount;
+	public Double getQuantity() {
+		return quantity;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setQuantity(Double quantity) {
+		this.quantity = quantity;
 	}
 
-	public long getTid() {
-		return tid;
+	public Long getId() {
+		return id;
 	}
 
-	public void setTid(long tid) {
-		this.tid = tid;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getSide() {
@@ -110,7 +110,7 @@ public class Trade implements Serializable {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("date", date).append("price", price).append("amount", amount)
-				.append("tid", tid).append("side", side).toString();
+		return new ToStringBuilder(this).append("id", id).append("price", price).append("quantity", quantity)
+				.append("side", side).append("timestamp", timestamp).toString();
 	}
 }

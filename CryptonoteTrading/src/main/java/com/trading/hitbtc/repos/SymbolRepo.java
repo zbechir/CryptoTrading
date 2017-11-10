@@ -7,6 +7,6 @@ import com.trading.hitbtc.models.Symbol;
 
 @Repository
 public interface SymbolRepo extends JpaRepository<Symbol, Long> {
-	Symbol findBySymbolEquals(String symbol);
+	Symbol findByIdEquals(String id);
 	
 }

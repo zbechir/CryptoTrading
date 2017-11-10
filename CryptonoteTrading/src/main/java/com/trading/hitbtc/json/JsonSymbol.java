@@ -1,30 +1,42 @@
 package com.trading.hitbtc.json;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import javax.validation.Valid;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "symbol", "step", "lot", "currency", "commodity", "takeLiquidityRate", "provideLiquidityRate" })
+@JsonPropertyOrder({ "id", "baseCurrency", "quoteCurrency", "quantityIncrement", "tickSize", "takeLiquidityRate",
+		"provideLiquidityRate", "feeCurrency" })
 public class JsonSymbol implements Serializable {
 
-	@JsonProperty("symbol")
-	private String symbol;
-	@JsonProperty("step")
-	private String step;
-	@JsonProperty("lot")
-	private String lot;
-	@JsonProperty("currency")
-	private String currency;
-	@JsonProperty("commodity")
-	private String commodity;
+	@JsonProperty("id")
+	private String id;
+	@JsonProperty("baseCurrency")
+	private String baseCurrency;
+	@JsonProperty("quoteCurrency")
+	private String quoteCurrency;
+	@JsonProperty("quantityIncrement")
+	private String quantityIncrement;
+	@JsonProperty("tickSize")
+	private String tickSize;
 	@JsonProperty("takeLiquidityRate")
 	private String takeLiquidityRate;
 	@JsonProperty("provideLiquidityRate")
 	private String provideLiquidityRate;
-	private final static long serialVersionUID = -4556221828501488485L;
+	@JsonProperty("feeCurrency")
+	private String feeCurrency;
+	@JsonIgnore
+	@Valid
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	private final static long serialVersionUID = -1302520463938879697L;
 
 	/**
 	 * No args constructor for use in serialization
@@ -35,98 +47,100 @@ public class JsonSymbol implements Serializable {
 
 	/**
 	 * 
+	 * @param quantityIncrement
+	 * @param id
 	 * @param provideLiquidityRate
-	 * @param commodity
-	 * @param symbol
+	 * @param feeCurrency
 	 * @param takeLiquidityRate
-	 * @param lot
-	 * @param step
-	 * @param currency
+	 * @param baseCurrency
+	 * @param tickSize
+	 * @param quoteCurrency
 	 */
-	public JsonSymbol(String symbol, String step, String lot, String currency, String commodity, String takeLiquidityRate,
-			String provideLiquidityRate) {
+	public JsonSymbol(String id, String baseCurrency, String quoteCurrency, String quantityIncrement, String tickSize,
+			String takeLiquidityRate, String provideLiquidityRate, String feeCurrency) {
 		super();
-		this.symbol = symbol;
-		this.step = step;
-		this.lot = lot;
-		this.currency = currency;
-		this.commodity = commodity;
+		this.id = id;
+		this.baseCurrency = baseCurrency;
+		this.quoteCurrency = quoteCurrency;
+		this.quantityIncrement = quantityIncrement;
+		this.tickSize = tickSize;
 		this.takeLiquidityRate = takeLiquidityRate;
 		this.provideLiquidityRate = provideLiquidityRate;
+		this.feeCurrency = feeCurrency;
 	}
 
-	@JsonProperty("symbol")
-	public String getSymbol() {
-		return symbol;
+	@JsonProperty("id")
+	public String getId() {
+		return id;
 	}
 
-	@JsonProperty("symbol")
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
+	@JsonProperty("id")
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public JsonSymbol withSymbol(String symbol) {
-		this.symbol = symbol;
+	public JsonSymbol withId(String id) {
+		this.id = id;
 		return this;
 	}
 
-	@JsonProperty("step")
-	public String getStep() {
-		return step;
+	@JsonProperty("baseCurrency")
+	public String getBaseCurrency() {
+		return baseCurrency;
 	}
 
-	@JsonProperty("step")
-	public void setStep(String step) {
-		this.step = step;
+	@JsonProperty("baseCurrency")
+	public void setBaseCurrency(String baseCurrency) {
+		this.baseCurrency = baseCurrency;
 	}
 
-	public JsonSymbol withStep(String step) {
-		this.step = step;
+	public JsonSymbol withBaseCurrency(String baseCurrency) {
+		this.baseCurrency = baseCurrency;
 		return this;
 	}
 
-	@JsonProperty("lot")
-	public String getLot() {
-		return lot;
+	@JsonProperty("quoteCurrency")
+	public String getQuoteCurrency() {
+		return quoteCurrency;
 	}
 
-	@JsonProperty("lot")
-	public void setLot(String lot) {
-		this.lot = lot;
+	@JsonProperty("quoteCurrency")
+	public void setQuoteCurrency(String quoteCurrency) {
+		this.quoteCurrency = quoteCurrency;
 	}
 
-	public JsonSymbol withLot(String lot) {
-		this.lot = lot;
+	public JsonSymbol withQuoteCurrency(String quoteCurrency) {
+		this.quoteCurrency = quoteCurrency;
 		return this;
 	}
 
-	@JsonProperty("currency")
-	public String getCurrency() {
-		return currency;
+	@JsonProperty("quantityIncrement")
+	public String getQuantityIncrement() {
+		return quantityIncrement;
 	}
 
-	@JsonProperty("currency")
-	public void setCurrency(String currency) {
-		this.currency = currency;
+	@JsonProperty("quantityIncrement")
+	public void setQuantityIncrement(String quantityIncrement) {
+		this.quantityIncrement = quantityIncrement;
 	}
 
-	public JsonSymbol withCurrency(String currency) {
-		this.currency = currency;
+	public JsonSymbol withQuantityIncrement(String quantityIncrement) {
+		this.quantityIncrement = quantityIncrement;
 		return this;
 	}
 
-	@JsonProperty("commodity")
-	public String getCommodity() {
-		return commodity;
+	@JsonProperty("tickSize")
+	public String getTickSize() {
+		return tickSize;
 	}
 
-	@JsonProperty("commodity")
-	public void setCommodity(String commodity) {
-		this.commodity = commodity;
+	@JsonProperty("tickSize")
+	public void setTickSize(String tickSize) {
+		this.tickSize = tickSize;
 	}
 
-	public JsonSymbol withCommodity(String commodity) {
-		this.commodity = commodity;
+	public JsonSymbol withTickSize(String tickSize) {
+		this.tickSize = tickSize;
 		return this;
 	}
 
@@ -160,9 +174,43 @@ public class JsonSymbol implements Serializable {
 		return this;
 	}
 
+	@JsonProperty("feeCurrency")
+	public String getFeeCurrency() {
+		return feeCurrency;
+	}
+
+	@JsonProperty("feeCurrency")
+	public void setFeeCurrency(String feeCurrency) {
+		this.feeCurrency = feeCurrency;
+	}
+
+	public JsonSymbol withFeeCurrency(String feeCurrency) {
+		this.feeCurrency = feeCurrency;
+		return this;
+	}
+
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
+
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
+
+	public JsonSymbol withAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+		return this;
+	}
+
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return new ToStringBuilder(this).append("id", id).append("baseCurrency", baseCurrency)
+				.append("quoteCurrency", quoteCurrency).append("quantityIncrement", quantityIncrement)
+				.append("tickSize", tickSize).append("takeLiquidityRate", takeLiquidityRate)
+				.append("provideLiquidityRate", provideLiquidityRate).append("feeCurrency", feeCurrency)
+				.append("additionalProperties", additionalProperties).toString();
 	}
 
 }
