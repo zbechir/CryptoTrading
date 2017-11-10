@@ -1,7 +1,5 @@
 package com.trading.hitbtc.ScheduledTasks;
 
-import static org.assertj.core.api.Assertions.entry;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
