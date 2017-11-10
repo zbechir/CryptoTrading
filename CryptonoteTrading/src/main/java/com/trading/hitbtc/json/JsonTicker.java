@@ -252,9 +252,12 @@ this.additionalProperties.put(name, value);
 return this;
 }
 
-@Override
-public String toString() {
-return new ToStringBuilder(this).append("ask", ask).append("bid", bid).append("last", last).append("open", open).append("low", low).append("high", high).append("volume", volume).append("volumeQuote", volumeQuote).append("timestamp", timestamp).append("symbol", symbol).append("additionalProperties", additionalProperties).toString();
-}
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("ask", ask).append("bid", bid).append("last", last).append("open", open)
+				.append("low", low).append("high", high).append("volume", volume).append("volumeQuote", volumeQuote)
+				.append("timestamp", timestamp).append("symbol", symbol)
+				.append("additionalProperties", additionalProperties).toString();
+	}
 
 }

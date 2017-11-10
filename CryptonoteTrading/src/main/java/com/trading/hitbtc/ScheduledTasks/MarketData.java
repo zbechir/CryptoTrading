@@ -1,12 +1,19 @@
 package com.trading.hitbtc.ScheduledTasks;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,8 +21,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.trading.hitbtc.json.JsonCurrency;
 import com.trading.hitbtc.json.JsonSymbol;
+import com.trading.hitbtc.json.JsonTicker;
+import com.trading.hitbtc.json.JsonTrade;
 import com.trading.hitbtc.models.Currency;
 import com.trading.hitbtc.models.Symbol;
+import com.trading.hitbtc.models.Ticker;
+import com.trading.hitbtc.models.Trade;
 import com.trading.hitbtc.repos.CurrencyRepo;
 import com.trading.hitbtc.repos.SymbolRepo;
 import com.trading.hitbtc.repos.TickerRepo;
@@ -37,11 +48,11 @@ public class MarketData {
 
 	private static final Logger log = LoggerFactory.getLogger(MarketData.class);
 
-	@Async
+	
 	@Scheduled(fixedDelay = 60000)
 	public void getAllcurrency() {
 		log.info("Getting the Currency list...");
-		RestTemplate restTemplate = new RestTemplate();
+		RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
 		ResponseEntity<JsonCurrency[]> response = restTemplate
 				.getForEntity("https://api.hitbtc.com/api/2/public/currency", JsonCurrency[].class);
 		JsonCurrency[] json = response.getBody();
@@ -66,13 +77,13 @@ public class MarketData {
 		log.info("All Currency saved / Updated Successfully...");
 	}
 
-	@Async
+	
 	@Scheduled(fixedDelay = 60000)
 	public void getAllSymbols() {
 		log.info("Getting the Symbol list...");
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<JsonSymbol[]> response = restTemplate
-				.getForEntity("https://api.hitbtc.com/api/2/public/symbol", JsonSymbol[].class);
+		RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+		ResponseEntity<JsonSymbol[]> response = restTemplate.getForEntity("https://api.hitbtc.com/api/2/public/symbol",
+				JsonSymbol[].class);
 		JsonSymbol[] json = response.getBody();
 		List<Symbol> Symbols = new ArrayList<Symbol>();
 		for (int i = 0; i < json.length; i++) {
@@ -92,6 +103,77 @@ public class MarketData {
 		}
 		symbolRepo.save(Symbols);
 		log.info("All Symbols saved / Updated Successfully...");
+	}
+
+	
+	@Scheduled(fixedDelay = 60000)
+	public void getAllTickers() {
+		log.info("Getting the tickers...");
+		RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+		ResponseEntity<JsonTicker[]> response = restTemplate.getForEntity("https://api.hitbtc.com/api/2/public/ticker",
+				JsonTicker[].class);
+		JsonTicker[] json = response.getBody();
+		List<Ticker> tickers = new ArrayList<>();
+		for (int i = 0; i < json.length; i++) {
+			if (symbolRepo.findByIdEquals(json[i].getSymbol()) == null) {
+				getAllSymbols();
+			}
+			Ticker tic = new Ticker();
+			try {
+				tic.setAsk(Double.valueOf(json[i].getAsk()));
+				tic.setBid(Double.valueOf(json[i].getBid()));
+				tic.setHigh(Double.valueOf(json[i].getHigh()));
+				tic.setLast(Double.valueOf(json[i].getLast()));
+				tic.setLow(Double.valueOf(json[i].getLow()));
+				tic.setOpen(Double.valueOf(json[i].getOpen()));
+				tic.setVolume(Double.valueOf(json[i].getVolume()));
+				tic.setVolumeQuote(Double.valueOf(json[i].getVolumeQuote()));
+				tic.setTimestamp(javax.xml.bind.DatatypeConverter.parseDateTime(json[i].getTimestamp()).getTime());
+				tic.setSymbol(symbolRepo.findByIdEquals(json[i].getSymbol()));
+				tickers.add(tic);
+			} catch (java.lang.NullPointerException e) {
+				log.warn("Error on conversion for Ticker :" + tic + " ==> Error is : " + e.getMessage());
+			}
+		}
+		tickerRepo.save(tickers);
+		log.info("All Tickers saved Successfully...");
+	}
+
+	@Scheduled(fixedDelay = 60000)
+	public void getAllTrades() {
+		log.info("Getting the trades...");
+		List<Symbol> symbols = symbolRepo.findAll();
+		String url = "";
+		List<Trade> Trades = new ArrayList<>();
+		for (Iterator<Symbol> it = symbols.iterator(); it.hasNext();) {
+			Symbol symbol = it.next();
+			log.info("Getting the trades for symbol "+symbol.getId()+"...");
+			Trade lastTrade = tradeRepo.findFirstBySymbolOrderByIdDesc(symbol);
+			if (lastTrade == null) {
+				url = "https://api.hitbtc.com/api/2/public/trades/" + symbol.getId()
+						+ "?sort=ASC&by=id&from=0&limit=1000";
+			} else {
+				url = "https://api.hitbtc.com/api/2/public/trades/" + symbol.getId() + "?sort=ASC&by=id&from="
+						+ lastTrade.getId() + 1 + "&limit=1000";
+			}
+			RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+			ResponseEntity<JsonTrade[]> response = restTemplate.getForEntity(url, JsonTrade[].class);
+			JsonTrade[] json = response.getBody();
+			for (int i = 0; i < json.length; i++) {
+				Trade tra = new Trade();
+				tra.setId(json[i].getId());
+				tra.setPrice(Double.valueOf(json[i].getPrice()));
+				tra.setQuantity(Double.valueOf(json[i].getQuantity()));
+				tra.setSide(json[i].getSide());
+				tra.setSymbol(symbol);
+				tra.setTimestamp(javax.xml.bind.DatatypeConverter.parseDateTime(json[i].getTimestamp()).getTime());
+				Trades.add(tra);
+			}
+		}
+		log.info("Saving "+Trades.size()+" Trades...");
+		tradeRepo.save(Trades);
+		log.info("Trades Saved Successfully...");
+
 	}
 
 	// @Async
@@ -224,5 +306,13 @@ public class MarketData {
 	// tradeRepo.save(Trades);
 	//
 	// }
+
+	private ClientHttpRequestFactory getClientHttpRequestFactory() {
+		int timeout = 60000;
+		RequestConfig config = RequestConfig.custom().setConnectTimeout(timeout).setConnectionRequestTimeout(timeout)
+				.setSocketTimeout(timeout).setSocketTimeout(timeout*10).build();
+		CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+		return new HttpComponentsClientHttpRequestFactory(client);
+	}
 
 }

@@ -7,6 +7,6 @@ import com.trading.hitbtc.models.Symbol;
 import com.trading.hitbtc.models.Trade;
 @Repository
 public interface TradeRepo extends JpaRepository<Trade, Long> {
-	Trade findByTidEquals(long tid);
-	Trade findFirstBySymbolOrderByTidDesc(Symbol symbol);
+	Trade findByIdEquals(Long id);
+	Trade findFirstBySymbolOrderByIdDesc(Symbol symbol);
 }

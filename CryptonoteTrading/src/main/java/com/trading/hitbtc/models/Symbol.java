@@ -14,8 +14,6 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Entity
 @Table(name = "Symbol_HITBTC", indexes = { @Index(name = "symbol_index", columnList = "id") })
 public class Symbol implements Serializable {
@@ -45,8 +43,6 @@ public class Symbol implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 	public Symbol(long symbolId, String id, Currency baseCurrency, Currency quoteCurrency, String quantityIncrement,
 			String tickSize, String takeLiquidityRate, String provideLiquidityRate, String feeCurrency) {
 		super();
@@ -61,121 +57,77 @@ public class Symbol implements Serializable {
 		this.feeCurrency = feeCurrency;
 	}
 
-
-
 	public long getSymbolId() {
 		return SymbolId;
 	}
-
-
 
 	public void setSymbolId(long symbolId) {
 		SymbolId = symbolId;
 	}
 
-
-
 	public String getId() {
 		return id;
 	}
-
-
 
 	public void setId(String id) {
 		this.id = id;
 	}
 
-
-
 	public Currency getBaseCurrency() {
 		return baseCurrency;
 	}
-
-
 
 	public void setBaseCurrency(Currency baseCurrency) {
 		this.baseCurrency = baseCurrency;
 	}
 
-
-
 	public Currency getQuoteCurrency() {
 		return quoteCurrency;
 	}
-
-
 
 	public void setQuoteCurrency(Currency quoteCurrency) {
 		this.quoteCurrency = quoteCurrency;
 	}
 
-
-
 	public String getQuantityIncrement() {
 		return quantityIncrement;
 	}
-
-
 
 	public void setQuantityIncrement(String quantityIncrement) {
 		this.quantityIncrement = quantityIncrement;
 	}
 
-
-
 	public String getTickSize() {
 		return tickSize;
 	}
-
-
 
 	public void setTickSize(String tickSize) {
 		this.tickSize = tickSize;
 	}
 
-
-
 	public String getTakeLiquidityRate() {
 		return takeLiquidityRate;
 	}
-
-
 
 	public void setTakeLiquidityRate(String takeLiquidityRate) {
 		this.takeLiquidityRate = takeLiquidityRate;
 	}
 
-
-
 	public String getProvideLiquidityRate() {
 		return provideLiquidityRate;
 	}
-
-
 
 	public void setProvideLiquidityRate(String provideLiquidityRate) {
 		this.provideLiquidityRate = provideLiquidityRate;
 	}
 
-
-
 	public String getFeeCurrency() {
 		return feeCurrency;
 	}
 
-
-
 	public void setFeeCurrency(String feeCurrency) {
 		this.feeCurrency = feeCurrency;
 	}
-
-
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
 
 	@Override
 	public String toString() {

@@ -15,6 +15,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Table(name = "Currency_HITBTC", indexes = { @Index(name = "uurrency_index", columnList = "id") })
 public class Currency implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1540145132056672297L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long CurrencyId;

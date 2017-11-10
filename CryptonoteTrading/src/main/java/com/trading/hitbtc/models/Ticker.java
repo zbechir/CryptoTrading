@@ -12,11 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import com.trading.hitbtc.models.Symbol;
 
-
 @Entity
-@Table(name="Ticker_HITBTC")
+@Table(name = "Ticker_HITBTC")
 public class Ticker implements Serializable {
 
 	/**
@@ -38,7 +39,7 @@ public class Ticker implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "symbol_id")
 	private Symbol symbol;
-	
+
 	public Ticker() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -149,10 +150,9 @@ public class Ticker implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Ticker [id=" + id + ", ask=" + ask + ", bid=" + bid + ", last=" + last + ", low=" + low + ", high="
-				+ high + ", open=" + open + ", volume=" + volume + ", volumeQuote=" + volumeQuote + ", timestamp="
-				+ timestamp + ", symbol=" + symbol + "]";
+		return new ToStringBuilder(this).append("ask", ask).append("bid", bid).append("last", last).append("open", open)
+				.append("low", low).append("high", high).append("volume", volume).append("volumeQuote", volumeQuote)
+				.append("timestamp", timestamp).append("symbol", symbol).toString();
 	}
-	
-	
+
 }
