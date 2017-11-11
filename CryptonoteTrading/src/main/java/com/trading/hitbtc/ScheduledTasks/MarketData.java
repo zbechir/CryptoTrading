@@ -1,5 +1,7 @@
 package com.trading.hitbtc.ScheduledTasks;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -48,7 +50,6 @@ public class MarketData {
 
 	private static final Logger log = LoggerFactory.getLogger(MarketData.class);
 
-	
 	@Scheduled(fixedDelay = 60000)
 	public void getAllcurrency() {
 		log.info("Getting the Currency list...");
@@ -77,7 +78,6 @@ public class MarketData {
 		log.info("All Currency saved / Updated Successfully...");
 	}
 
-	
 	@Scheduled(fixedDelay = 60000)
 	public void getAllSymbols() {
 		log.info("Getting the Symbol list...");
@@ -105,7 +105,6 @@ public class MarketData {
 		log.info("All Symbols saved / Updated Successfully...");
 	}
 
-	
 	@Scheduled(fixedDelay = 60000)
 	public void getAllTickers() {
 		log.info("Getting the tickers...");
@@ -133,6 +132,8 @@ public class MarketData {
 				tickers.add(tic);
 			} catch (java.lang.NullPointerException e) {
 				log.warn("Error on conversion for Ticker :" + tic + " ==> Error is : " + e.getMessage());
+			} catch (java.lang.NumberFormatException e) {
+				log.warn("Error on conversion for Ticker :" + tic + " ==> Error is : " + e.getMessage());
 			}
 		}
 		tickerRepo.save(tickers);
@@ -147,7 +148,7 @@ public class MarketData {
 		List<Trade> Trades = new ArrayList<>();
 		for (Iterator<Symbol> it = symbols.iterator(); it.hasNext();) {
 			Symbol symbol = it.next();
-			log.info("Getting the trades for symbol "+symbol.getId()+"...");
+			log.info("Getting the trades for symbol " + symbol.getId() + "...");
 			Trade lastTrade = tradeRepo.findFirstBySymbolOrderByIdDesc(symbol);
 			if (lastTrade == null) {
 				url = "https://api.hitbtc.com/api/2/public/trades/" + symbol.getId()
@@ -170,7 +171,7 @@ public class MarketData {
 				Trades.add(tra);
 			}
 		}
-		log.info("Saving "+Trades.size()+" Trades...");
+		log.info("Saving " + Trades.size() + " Trades...");
 		tradeRepo.save(Trades);
 		log.info("Trades Saved Successfully...");
 
@@ -310,7 +311,7 @@ public class MarketData {
 	private ClientHttpRequestFactory getClientHttpRequestFactory() {
 		int timeout = 60000;
 		RequestConfig config = RequestConfig.custom().setConnectTimeout(timeout).setConnectionRequestTimeout(timeout)
-				.setSocketTimeout(timeout).setSocketTimeout(timeout*10).build();
+				.setSocketTimeout(timeout).setSocketTimeout(timeout * 10).build();
 		CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
 		return new HttpComponentsClientHttpRequestFactory(client);
 	}
