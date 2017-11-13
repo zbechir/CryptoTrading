@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
-@Table(name = "Trading-Balance_HITBTC",  indexes= {@Index(name="currency_index", columnList="currency_id")})
+@Table(name = "TradingBalance_HITBTC",  indexes= {@Index(name="currency_index", columnList="currency_id")})
 public class TradingBalance implements Serializable {
 
 	/**
