@@ -14,7 +14,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "currency", "available", "reserved" })
-public class JsonBalance implements Serializable {
+public class JsonTradingBalance implements Serializable {
 
 	@JsonProperty("currency")
 	private String currency;
@@ -25,13 +25,13 @@ public class JsonBalance implements Serializable {
 	@JsonIgnore
 	@Valid
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-	private final static long serialVersionUID = 700493125233451403L;
+	private final static long serialVersionUID = 1952246264503308334L;
 
 	/**
 	 * No args constructor for use in serialization
 	 * 
 	 */
-	public JsonBalance() {
+	public JsonTradingBalance() {
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class JsonBalance implements Serializable {
 	 * @param reserved
 	 * @param currency
 	 */
-	public JsonBalance(String currency, String available, String reserved) {
+	public JsonTradingBalance(String currency, String available, String reserved) {
 		super();
 		this.currency = currency;
 		this.available = available;
@@ -57,7 +57,7 @@ public class JsonBalance implements Serializable {
 		this.currency = currency;
 	}
 
-	public JsonBalance withCurrency(String currency) {
+	public JsonTradingBalance withCurrency(String currency) {
 		this.currency = currency;
 		return this;
 	}
@@ -72,7 +72,7 @@ public class JsonBalance implements Serializable {
 		this.available = available;
 	}
 
-	public JsonBalance withAvailable(String available) {
+	public JsonTradingBalance withAvailable(String available) {
 		this.available = available;
 		return this;
 	}
@@ -87,7 +87,7 @@ public class JsonBalance implements Serializable {
 		this.reserved = reserved;
 	}
 
-	public JsonBalance withReserved(String reserved) {
+	public JsonTradingBalance withReserved(String reserved) {
 		this.reserved = reserved;
 		return this;
 	}
@@ -102,7 +102,7 @@ public class JsonBalance implements Serializable {
 		this.additionalProperties.put(name, value);
 	}
 
-	public JsonBalance withAdditionalProperty(String name, Object value) {
+	public JsonTradingBalance withAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
 		return this;
 	}
