@@ -89,6 +89,8 @@ public class MarketParametres {
 		log.info("All Symbols saved / Updated Successfully...");
 	}
 	
+	
+	
 	private ClientHttpRequestFactory getClientHttpRequestFactory() {
 		int timeout = 60000;
 		RequestConfig config = RequestConfig.custom().setConnectTimeout(timeout).setConnectionRequestTimeout(timeout)
