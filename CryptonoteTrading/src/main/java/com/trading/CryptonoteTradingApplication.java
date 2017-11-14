@@ -8,8 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableJpaAuditing
-@EnableScheduling
-@EnableAsync
 public class CryptonoteTradingApplication {
 
 	public static void main(String[] args) {
