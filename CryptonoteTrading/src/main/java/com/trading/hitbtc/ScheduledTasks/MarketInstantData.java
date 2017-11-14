@@ -24,12 +24,15 @@ import org.springframework.web.client.RestTemplate;
 
 import com.trading.hitbtc.json.JsonBalance;
 import com.trading.hitbtc.json.JsonTicker;
+import com.trading.hitbtc.json.JsonTradingBalance;
 import com.trading.hitbtc.models.Balance;
 import com.trading.hitbtc.models.Ticker;
+import com.trading.hitbtc.models.TradingBalance;
 import com.trading.hitbtc.repos.BalanceRepo;
 import com.trading.hitbtc.repos.CurrencyRepo;
 import com.trading.hitbtc.repos.SymbolRepo;
 import com.trading.hitbtc.repos.TickerRepo;
+import com.trading.hitbtc.repos.TradingBalanceRepo;
 
 @Component
 public class MarketInstantData {
@@ -44,6 +47,9 @@ public class MarketInstantData {
 	
 	@Autowired
 	BalanceRepo balanceRepo;
+	
+	@Autowired
+	TradingBalanceRepo tradingbalanceRepo;
 
 	private static final Logger log = LoggerFactory.getLogger(MarketInstantData.class);
 
@@ -89,7 +95,7 @@ public class MarketInstantData {
 	@Scheduled(fixedDelay = 60000)
 	public void getBalance() {
 		log.info("Getting the Balance...");
-		List<Balance> balances= new ArrayList<>();
+		List<Balance> balances= new ArrayList<Balance>();
 		RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
 		HttpEntity<String> request = new HttpEntity<String>(setAuthentification());
 		ResponseEntity<JsonBalance[]> response = restTemplate.exchange("https://api.hitbtc.com/api/2/account/balance",HttpMethod.GET,request, JsonBalance[].class);
@@ -105,6 +111,28 @@ public class MarketInstantData {
 		log.info("Saving " + balances.size() + " Balances...");
 		balanceRepo.save(balances);
 		log.info("Balances Saved Successfully...");
+	}
+	
+	@Async
+	@Scheduled(fixedDelay = 60000)
+	public void getTradingBalance() {
+		log.info("Getting the Trading Balance...");
+		List<TradingBalance> TrdBalances= new ArrayList<TradingBalance>();
+		RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+		HttpEntity<String> request = new HttpEntity<String>(setAuthentification());
+		ResponseEntity<JsonTradingBalance[]> response = restTemplate.exchange("https://api.hitbtc.com/api/2/trading/balance",HttpMethod.GET,request, JsonTradingBalance[].class);
+		JsonTradingBalance[] json = response.getBody();
+		for (int i = 0; i < json.length; i++) {
+			TradingBalance bal=new TradingBalance();
+			bal.setAvailable(Double.valueOf(json[i].getAvailable()));
+			bal.setCurrency(currencyRepo.findByIdEquals(json[i].getCurrency()));
+			bal.setReserved(Double.valueOf(json[i].getReserved()));
+			bal.setTimestamp(new Date());
+			TrdBalances.add(bal);
+		}
+		log.info("Saving " + TrdBalances.size() + " Trading Balances...");
+		tradingbalanceRepo.save(TrdBalances);
+		log.info("Trading Balances Saved Successfully...");
 	}
 
 	private ClientHttpRequestFactory getClientHttpRequestFactory() {
