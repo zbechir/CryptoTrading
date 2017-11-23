@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
-@Table(name = "Currency_HITBTC", indexes = { @Index(name = "uurrency_index", columnList = "id") })
+@Table(name = "Currency_HITBTC", indexes = { @Index(name = "currency_index", columnList = "id") })
 public class Currency implements Serializable {
 
 	/**

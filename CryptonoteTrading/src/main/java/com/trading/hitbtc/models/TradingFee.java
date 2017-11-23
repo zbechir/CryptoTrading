@@ -17,6 +17,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Table(name = "TradingFee_HITBTC",  indexes= {@Index(name="currency_index", columnList="currency_id")})
 public class TradingFee implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Id;

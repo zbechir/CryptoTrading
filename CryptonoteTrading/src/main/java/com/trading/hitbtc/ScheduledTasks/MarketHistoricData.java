@@ -18,8 +18,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.trading.hitbtc.json.JsonTrade;
+import com.trading.hitbtc.models.LastTrade;
 import com.trading.hitbtc.models.Symbol;
 import com.trading.hitbtc.models.Trade;
+import com.trading.hitbtc.repos.LastTradeRepo;
 import com.trading.hitbtc.repos.SymbolRepo;
 import com.trading.hitbtc.repos.TradeRepo;
 
@@ -34,22 +36,30 @@ public class MarketHistoricData {
 	@Autowired
 	TradeRepo tradeRepo;
 
+	@Autowired
+	LastTradeRepo lastTradeRepo;
+
 	@Scheduled(fixedDelay = 60000)
 	public void getAllTrades() {
 		log.info("Getting the trades...");
 		List<Symbol> symbols = symbolRepo.findAll();
 		String url = "";
 		List<Trade> Trades = new ArrayList<>();
+
 		for (Iterator<Symbol> it = symbols.iterator(); it.hasNext();) {
+			LastTrade lastTrade = new LastTrade();
 			Symbol symbol = it.next();
+			long lTiD = 0;
 			log.info("Getting the trades for symbol " + symbol.getId() + "...");
-			Trade lastTrade = tradeRepo.findFirstBySymbolOrderByIdDesc(symbol);
+			lastTrade = lastTradeRepo.findBySymbolEquals(symbol);
 			if (lastTrade == null) {
 				url = "https://api.hitbtc.com/api/2/public/trades/" + symbol.getId()
 						+ "?sort=ASC&by=id&from=0&limit=1000";
+				lastTrade = new LastTrade();
+				lastTrade.setSymbol(symbol);
 			} else {
-				Long Id = lastTrade.getId() + 1;
-				url = "https://api.hitbtc.com/api/2/public/trades/" + symbol.getId() + "?sort=ASC&by=id&from=" + Id
+				lTiD = lastTrade.getLastTrade() + 1;
+				url = "https://api.hitbtc.com/api/2/public/trades/" + symbol.getId() + "?sort=ASC&by=id&from=" + lTiD
 						+ "&limit=1000";
 			}
 			log.info("Fetching the URL = " + url);
@@ -57,6 +67,7 @@ public class MarketHistoricData {
 				RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
 				ResponseEntity<JsonTrade[]> response = restTemplate.getForEntity(url, JsonTrade[].class);
 				JsonTrade[] json = response.getBody();
+
 				for (int i = 0; i < json.length; i++) {
 					Trade tra = new Trade();
 					tra.setId(json[i].getId());
@@ -66,7 +77,10 @@ public class MarketHistoricData {
 					tra.setSymbol(symbol);
 					tra.setTimestamp(javax.xml.bind.DatatypeConverter.parseDateTime(json[i].getTimestamp()).getTime());
 					Trades.add(tra);
+					lTiD = json[i].getId();
 				}
+				lastTrade.setLastTrade(lTiD);
+				lastTradeRepo.save(lastTrade);
 				log.info("Adding " + json.length + " Trades to the List...");
 			} catch (org.springframework.web.client.HttpServerErrorException e) {
 				log.error("Fetching URL  =" + url + " Error...", e);
