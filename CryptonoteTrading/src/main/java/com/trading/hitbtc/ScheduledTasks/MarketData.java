@@ -157,6 +157,7 @@ public class MarketData {
 				url = "https://api.hitbtc.com/api/2/public/trades/" + symbol.getId() + "?sort=ASC&by=id&from="
 						+ lastTrade.getId() + 1 + "&limit=1000";
 			}
+			log.info("Using the URL = "+url);
 			RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
 			ResponseEntity<JsonTrade[]> response = restTemplate.getForEntity(url, JsonTrade[].class);
 			JsonTrade[] json = response.getBody();
@@ -170,6 +171,7 @@ public class MarketData {
 				tra.setTimestamp(javax.xml.bind.DatatypeConverter.parseDateTime(json[i].getTimestamp()).getTime());
 				Trades.add(tra);
 			}
+			log.info("Adding "+json.length+" Trades to the list...");
 		}
 		log.info("Saving " + Trades.size() + " Trades...");
 		tradeRepo.save(Trades);
