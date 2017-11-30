@@ -15,10 +15,9 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
-@Table(name="Balance_HITBTC", indexes= {@Index(name="currency_index", columnList="currency_id")})
-public class Balance implements Serializable {
+@Table(name = "TradingBalance_HITBTC",  indexes= {@Index(name="currency_index", columnList="currency_id")})
+public class TradingBalance implements Serializable {
 
 	/**
 	 * 
@@ -33,15 +32,13 @@ public class Balance implements Serializable {
 	private Double available;
 	private Double reserved;
 	private Date timestamp;
-	
-	public Balance() {
+
+	public TradingBalance() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
-	public Balance(Long id, Currency currency, Double available, Double reserved, Date timestamp) {
+	public TradingBalance(Long id, Currency currency, Double available, Double reserved, Date timestamp) {
 		super();
 		this.id = id;
 		this.currency = currency;
@@ -50,19 +47,13 @@ public class Balance implements Serializable {
 		this.timestamp = timestamp;
 	}
 
-
-
 	public Date getTimestamp() {
 		return timestamp;
 	}
 
-
-
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -95,12 +86,10 @@ public class Balance implements Serializable {
 	public void setReserved(Double reserved) {
 		this.reserved = reserved;
 	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append("currency", currency).append("available", available)
-				.append("reserved", reserved).append("Date",timestamp).toString();
+				.append("reserved", reserved).append("Date", timestamp).toString();
 	}
 }
-
-
-	
