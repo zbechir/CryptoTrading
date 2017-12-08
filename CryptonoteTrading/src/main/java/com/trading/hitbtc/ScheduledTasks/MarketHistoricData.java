@@ -84,6 +84,8 @@ public class MarketHistoricData {
 				log.info("Adding " + json.length + " Trades to the List...");
 			} catch (org.springframework.web.client.HttpServerErrorException e) {
 				log.error("Fetching URL  =" + url + " Error...", e);
+			} catch(org.springframework.web.client.ResourceAccessException e) {
+				log.error("Fetching URL  =" + url + " Error...", e);
 			}
 
 			log.info("Trade List size " + Trades.size());
